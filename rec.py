@@ -12,7 +12,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 # Set the dataset path
 DATASET_PATH = "data/wiki_movie_plots_deduped.csv"
 
-# 🔄 Simple Loading Animation
+# Simple Loading Animation
 def loading_animation(stop_event):
     for symbol in itertools.cycle(['|', '/', '-', '\\']):
         if stop_event.is_set():
@@ -22,7 +22,7 @@ def loading_animation(stop_event):
         time.sleep(0.1)
     sys.stdout.write('\r' + ' ' * 50 + '\r')  # Clear the line when done
 
-# 📥 Load Movie Dataset
+# Load Movie Dataset
 def load_data():
     try:
         df = pd.read_csv(DATASET_PATH)
@@ -32,13 +32,13 @@ def load_data():
         print(colored(f"❌ Error loading dataset: {e}", "red"))
         sys.exit(1)
 
-# 🔠 Convert Text into TF-IDF Vectors (Optimized)
+# Convert Text into TF-IDF Vectors (Optimized)
 def preprocess_text(df, text_column):
     vectorizer = TfidfVectorizer(stop_words='english', max_features=20000)  # Limit to 20k features for speed
     tfidf_matrix = vectorizer.fit_transform(df[text_column])  # Keeps it sparse (memory efficient)
     return vectorizer, tfidf_matrix
 
-# 🔍 Find the Most Similar Movies
+# Find the Most Similar Movies
 def get_recommendations(query, vectorizer, tfidf_matrix, df, top_n=5):
     query_vec = vectorizer.transform([query])  # Convert user input to a vector
     similarity_scores = cosine_similarity(query_vec, tfidf_matrix).flatten()
@@ -49,7 +49,7 @@ def get_recommendations(query, vectorizer, tfidf_matrix, df, top_n=5):
     top_indices = similarity_scores.argsort()[-top_n:][::-1]
     return df.iloc[top_indices][['Title', 'Plot']], similarity_scores[top_indices]
 
-# 🏆 Display Recommendations in a Friendly Format
+# Display Recommendations in a Friendly Format
 def display_recommendations(recommendations, scores):
     print("\n🎬 " + colored("Top Movie Recommendations:", "cyan", attrs=["bold"]) + "\n")
     for idx, (row, score) in enumerate(zip(recommendations.iterrows(), scores), start=1):
@@ -58,7 +58,7 @@ def display_recommendations(recommendations, scores):
         similarity = colored(f"({score:.2%} match)", "green")
         print(f"🎥 {title} {similarity}\n   📝 {plot}\n" + "-" * 80)
 
-# 🚀 Main Function (CLI Handling)
+# Main Function (CLI Handling)
 def main():
     parser = argparse.ArgumentParser(description="🎥 Simple Movie Recommendation System")
     parser.add_argument("query", nargs="?", type=str, help="Describe the kind of movie you're looking for")
