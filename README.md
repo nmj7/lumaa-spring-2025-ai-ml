@@ -17,9 +17,15 @@ Make sure Python 3.8+ is installed. Install required libraries by using the foll
 Example usage:
 `python rec.py "I like romantic comedies" --top_n 3`
 
-Output:
+#Output:
 ---
 ![image](https://github.com/user-attachments/assets/d01b1e04-4ce1-4dd1-b425-f89e14e0c493)
+
+#Demonstration:
+---
+https://www.youtube.com/watch?v=X5biszRA-rE
+
+
 
 
 
